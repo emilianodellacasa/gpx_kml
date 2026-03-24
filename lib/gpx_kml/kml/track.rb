@@ -38,7 +38,7 @@ module KML
       elem = @node.xpath('.')
       while elem.xpath('self::kml').empty?
         elem = elem.xpath('..')
-        return elem.xpath('./atom:author/atom:name/text()').to_s unless elem.xpath('./atom:author').empty?
+        return elem.xpath('./author/name/text()').to_s unless elem.xpath('./author').empty?
       end
       ''
     end
@@ -47,7 +47,7 @@ module KML
       elem = @node.xpath('.')
       while elem.xpath('self::kml').empty?
         elem = elem.xpath('..')
-        return elem.xpath('./atom:link/@href').to_s unless elem.xpath('./atom:link').empty?
+        return elem.xpath('./link/@href').to_s unless elem.xpath('./link').empty?
       end
       ''
     end
