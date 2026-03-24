@@ -2,7 +2,7 @@ module KML
   # Docu
   class Track
     def initialize(track)
-      return unless track.is_a?(Nokogiri::XML::Element) && !track.xpath('self::xmlns:LineString').empty?
+      return unless track.is_a?(Nokogiri::XML::Element) && !track.xpath('self::LineString').empty?
 
       @node = track
       @name = _name
@@ -17,16 +17,16 @@ module KML
 
     def _name
       elem = @node.xpath('.')
-      while elem.xpath('self::xmlns:kml').empty?
+      while elem.xpath('self::kml').empty?
         elem = elem.xpath('..')
-        return elem.xpath('./xmlns:name/text()').to_s unless elem.xpath('./xmlns:name').empty?
+        return elem.xpath('./name/text()').to_s unless elem.xpath('./name').empty?
       end
       ''
     end
 
     def _points
       p = []
-      points = @node.xpath('./xmlns:coordinates/text()').to_s
+      points = @node.xpath('./coordinates/text()').to_s
       array_points = points.split(' ')
       array_points.each_with_index do |ap, i|
         p[i] = KML::Point.new ap, self, @node
@@ -36,7 +36,7 @@ module KML
 
     def _author
       elem = @node.xpath('.')
-      while elem.xpath('self::xmlns:kml').empty?
+      while elem.xpath('self::kml').empty?
         elem = elem.xpath('..')
         return elem.xpath('./atom:author/atom:name/text()').to_s unless elem.xpath('./atom:author').empty?
       end
@@ -45,7 +45,7 @@ module KML
 
     def _link
       elem = @node.xpath('.')
-      while elem.xpath('self::xmlns:kml').empty?
+      while elem.xpath('self::kml').empty?
         elem = elem.xpath('..')
         return elem.xpath('./atom:link/@href').to_s unless elem.xpath('./atom:link').empty?
       end
